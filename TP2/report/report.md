@@ -42,3 +42,32 @@ Seed (constant) : 42
 - **Effet du scheduler** :  
   - Changer EulerA → DDIM modifie le style de convergence.  
   - À paramètres identiques (steps/guidance/seed), la composition globale reste proche, mais le rendu peut varier sensiblement.
+
+## TP2 — Img2Img : effet du paramètre strength 
+
+Image source (avant) :
+![](../outputs/i2i_source.png)
+
+Résultats :
+- strength = 0.35  
+![](../outputs/i2i_run07_strength035.png)
+
+- strength = 0.60  
+![](../outputs/i2i_run08_strength060.png)
+
+- strength = 0.85  
+![](../outputs/i2i_run09_strength085.png)
+
+### Analyse qualitative
+
+- **Ce qui est conservé (structure / identité)** :
+  - À strength=0.35, la forme globale et le cadrage restent proches de l’image source ; le modèle retouche plus qu’il ne transforme.
+  - À strength=0.60, l’identité produit est souvent encore reconnaissable, mais certains éléments peuvent changer.
+
+- **Ce qui change (textures / fond / lumière / détails)** :
+  - En augmentant strength, les textures deviennent plus générées, l’éclairage et les ombres peuvent être réinterprétés.
+  - À strength=0.85, le fond et les détails peuvent être largement réinventés : le modèle s’éloigne fortement de l’image d’entrée.
+
+- **Utilisabilité e-commerce** :
+  - strength faible/moyen est généralement préférable pour rester fidèle au produit réel.
+  - strength élevé (0.85) peut produire un rendu visuellement attractif mais trop loin du produit original : risque de modifier la forme, le matériau ou des caractéristiques importantes.

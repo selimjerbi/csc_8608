@@ -18,7 +18,7 @@ def run_img2img_experiments() -> None:
     guidance = 7.5
 
     # Image source (produit) dans TP2/inputs/
-    init_path = "inputs/product.jpg"  # <-- adapte le nom exact de ton fichier
+    init_path = "inputs/produit_im.jpg"
 
     # Prompt e-commerce (anglais) : même prompt pour les 3 runs
     prompt = (

@@ -152,6 +152,24 @@ Un point BG placé sur la zone à exclure force SAM à couper cette région, ce 
 Malgré cela, certains cas restent difficiles : objets très fins (grillage), transparents (verre), ou faible contraste, où même FG/BG peut produire plusieurs masques plausibles.  
 Dans ces situations, le multimask est utile : on peut choisir manuellement le candidat le plus cohérent visuellement, même si le score n’est pas toujours parfaitement corrélé à la meilleure segmentation.
 
+### Bilan – Limites observées et pistes d’amélioration
+
+Les principaux échecs de la segmentation observés sur nos images sont liés à trois facteurs.  
+(1) Les fonds complexes ou texturés entraînent des fuites du masque vers l’arrière-plan, surtout avec une bbox large. L’ajout systématique de points BG et des contraintes UI sur la taille minimale/maximale de la bbox améliore nettement ces cas.  
+(2) Les objets fins, transparents ou à faible contraste restent difficiles : SAM produit plusieurs masques plausibles. Un post-traitement ou un dataset dédié à ces objets aiderait.  
+(3) Les ambiguïtés dans la bbox mènent à la mauvaise instance segmentée. Les points FG sont alors essentiels, et une UI guidant l’utilisateur réduit fortement ces erreurs.  
+Pour passer à un usage plus robuste, il faudrait combiner guidage utilisateur, règles simples sur les métriques du masque et données d’entraînement ciblées.
+
+### POC vers produit – Logs et monitoring prioritaires
+
+Pour une intégration produit, il est essentiel de logger et monitorer plusieurs signaux clés.  
+En priorité : 
+(1) le score SAM et sa distribution dans le temps, pour détecter une baisse globale de qualité ou un drift des images.  
+(2) Les métriques géométriques du masque, utiles pour repérer des masques anormalement petits ou trop larges.  
+(3) Le nombre de points FG/BG utilisés par requête : une augmentation peut signaler des cas plus difficiles ou une dégradation du modèle.  
+(4) Le temps d’inférence et l’usage GPU/CPU, pour détecter des régressions de performance.  
+(5) Les choix multimask permettent d’identifier quand le score ne reflète pas le masque réellement pertinent.  
+Ces signaux combinés permettent de détecter rapidement des régressions fonctionnelles, des changements de données d’entrée ou des problèmes de performance.
 
 
 

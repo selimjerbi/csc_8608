@@ -48,7 +48,6 @@ def run_text2img_experiments() -> None:
         save(img, f"outputs/t2i_{name}.png")
         print("T2I", name, {"scheduler": scheduler_name, "seed": seed, "steps": steps, "guidance": guidance})
 
-
 def main() -> None:
     run_text2img_experiments()
     print("DONE: generated 6 images in outputs/t2i_*.png")

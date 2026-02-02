@@ -71,3 +71,22 @@ Résultats :
 - **Utilisabilité e-commerce** :
   - strength faible/moyen est généralement préférable pour rester fidèle au produit réel.
   - strength élevé (0.85) peut produire un rendu visuellement attractif mais trop loin du produit original : risque de modifier la forme, le matériau ou des caractéristiques importantes.
+
+## TP2 — Mini-produit Streamlit (MVP)
+
+L’application Streamlit permet :
+- mode **Text2Img** (prompt → image),
+- mode **Img2Img** (image + prompt → image),
+- contrôle des paramètres : seed, steps, guidance, scheduler, et strength (img2img),
+- affichage d’un bloc **Config** pour reproductibilité.
+
+### Captures
+- **Text2Img** : 
+
+![alt text](../img/test2img.png)
+
+- **Img2Img** : 
+
+![alt text](../img/imgtoimg1.png)
+
+![alt text](../img/imgtoimg.png)

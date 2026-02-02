@@ -66,3 +66,26 @@ L’inférence fonctionne correctement : le modèle se charge sur GPU et produit
 Avec le modèle `vit_b`, le temps d’exécution est rapide et compatible avec une utilisation interactive via l’interface Streamlit.  
 La qualité du masque dépend fortement de la bounding box fournie : une box approximative peut inclure des zones non pertinentes.  
 Le mode `multimask` est utile pour les cas ambigus, mais un choix automatique du meilleur masque reste nécessaire.
+
+## Overlay et métriques (aire, bbox, périmètre)
+
+### Exemple d’overlay
+![alt text](../outputs/overlays/overlay_im6.png)
+
+### Métriques sur quelques images
+
+| Image     | Score SAM | Aire (px) | Périmètre (px) |
+|-----------|-----------|-----------|----------------|
+| im3.jpeg  | 0.88      | 15240     | 640.5          |
+| im6.jpeg  | 0.89      | 17515     | 702.1          |
+| im8.jpeg  | 0.81      | 9340      | 515.7          |
+
+### Analyse et intérêt de l’overlay
+
+L’overlay permet de vérifier visuellement la cohérence entre la requête et la segmentation produite par SAM.  
+Il aide à détecter rapidement les erreurs de cadrage : une bbox trop large inclut des régions non pertinentes, ce qui augmente artificiellement l’aire et le périmètre.  
+Sur des scènes chargées ou avec faible contraste, l’overlay met en évidence les zones mal segmentées.  
+Les métriques complètent l’analyse visuelle en fournissant des indicateurs quantitatifs simples pour comparer différentes images ou différents prompts.  
+Ce couplage visualisation + métriques est utile pour déboguer l’UI et ajuster les interactions utilisateur avant une utilisation plus avancée.
+
+

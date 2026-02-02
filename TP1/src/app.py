@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 import streamlit as st
 
-from sam_utils import load_sam_predictor, predict_mask_from_box
+from sam_utils import load_sam_predictor, predict_masks_from_box_and_points
 from geom_utils import mask_area, mask_bbox, mask_perimeter
 from viz_utils import render_overlay
 
@@ -13,7 +13,6 @@ from viz_utils import render_overlay
 DATA_DIR = Path("TP1/data/images")
 OUT_DIR = Path("TP1/outputs/overlays")
 
-# >>> adapte selon ton checkpoint
 CKPT_PATH = "TP1/models/sam_vit_b_01ec64.pth"
 MODEL_TYPE = "vit_b"
 
@@ -26,13 +25,22 @@ def load_image_rgb(path: Path) -> np.ndarray:
     return rgb
 
 
-def draw_box_preview(image_rgb: np.ndarray, box_xyxy: np.ndarray) -> np.ndarray:
+def draw_preview(image_rgb: np.ndarray, box_xyxy: np.ndarray, points) -> np.ndarray:
+    """
+    Dessine bbox + points FG/BG sur l'image (prévisualisation avant segmentation).
+    FG = vert, BG = rouge
+    """
     preview = image_rgb.copy()
     bgr = cv2.cvtColor(preview, cv2.COLOR_RGB2BGR)
+
     x1, y1, x2, y2 = [int(v) for v in box_xyxy.tolist()]
     cv2.rectangle(bgr, (x1, y1), (x2, y2), color=(0, 255, 0), thickness=2)
-    preview = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-    return preview
+
+    for (x, y, lab) in points:
+        color = (0, 255, 0) if int(lab) == 1 else (0, 0, 255)
+        cv2.circle(bgr, (int(x), int(y)), radius=6, color=color, thickness=-1)
+
+    return cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
 
 
 @st.cache_resource
@@ -43,6 +51,13 @@ def get_predictor():
 
 st.set_page_config(page_title="TP1 - SAM Segmentation", layout="wide")
 st.title("TP1 — Segmentation interactive (SAM)")
+
+# Session state
+if "points" not in st.session_state:
+    st.session_state["points"] = []  # liste de tuples (x, y, label) label: 1=FG, 0=BG
+
+if "last_pred" not in st.session_state:
+    st.session_state["last_pred"] = None  # dict ou None
 
 # 1) Liste d'images
 imgs = sorted([p for p in DATA_DIR.iterdir() if p.suffix.lower() in [".jpg", ".jpeg", ".png"]])
@@ -76,48 +91,120 @@ x_min, x_max = (x1, x2) if x1 < x2 else (x2, x1)
 y_min, y_max = (y1, y2) if y1 < y2 else (y2, y1)
 box = np.array([x_min, y_min, x_max, y_max], dtype=np.int32)
 
-# Prévisualisation bbox live (avant segmentation)
-preview = draw_box_preview(img, box)
-st.image(preview, caption="Prévisualisation : bbox (avant segmentation)", use_container_width=True)
-
-# Bonus simple : avertissement bbox très petite
+# Warning bbox petite
 MIN_W = 20
 MIN_H = 20
 if (x_max - x_min) < MIN_W or (y_max - y_min) < MIN_H:
     st.warning("BBox très petite : essayez une bbox plus large.")
 
-# 4) Segmentation
+# 4) Guidage points FG/BG
+st.subheader("Guidage (optionnel) : points FG/BG")
+
+c1, c2, c3 = st.columns(3)
+with c1:
+    px = st.slider("point x", 0, W - 1, int(W * 0.5))
+with c2:
+    py = st.slider("point y", 0, H - 1, int(H * 0.5))
+with c3:
+    ptype = st.selectbox("type", ["FG (objet)", "BG (fond)"])
+
+b1, b2 = st.columns(2)
+with b1:
+    if st.button("Ajouter point"):
+        label = 1 if ptype.startswith("FG") else 0
+        st.session_state["points"].append((int(px), int(py), int(label)))
+with b2:
+    if st.button("Réinitialiser points"):
+        st.session_state["points"] = []
+
+st.write({
+    "n_points": len(st.session_state["points"]),
+    "points": st.session_state["points"],
+})
+
+# 5) Prévisualisation bbox + points
+preview = draw_preview(img, box, st.session_state["points"])
+st.image(preview, caption="Prévisualisation : bbox + points (avant segmentation)", use_container_width=True)
+
+# 6) Segmentation : bbox + points -> multimask
 do_segment = st.button("Segmenter")
 if do_segment:
     predictor = get_predictor()
 
+    pts = st.session_state["points"]
+    if len(pts) > 0:
+        point_coords = np.array([(x, y) for (x, y, _) in pts], dtype=np.float32)
+        point_labels = np.array([lab for (_, _, lab) in pts], dtype=np.int64)
+    else:
+        point_coords, point_labels = None, None
+
     t0 = time.time()
-    mask, score = predict_mask_from_box(predictor, img, box, multimask=True)
+    masks, scores = predict_masks_from_box_and_points(
+        predictor=predictor,
+        image_rgb=img,
+        box_xyxy=box,
+        point_coords=point_coords,
+        point_labels=point_labels,
+        multimask=True,
+    )
     dt = (time.time() - t0) * 1000.0
 
+    st.session_state["last_pred"] = {
+        "img_name": img_name,
+        "box": box.copy(),
+        "points": list(pts),
+        "masks": masks,
+        "scores": scores,
+        "time_ms": float(dt),
+    }
+
+# 7) Choix du masque candidat + affichage + sauvegarde
+lp = st.session_state["last_pred"]
+if lp is not None and lp["img_name"] == img_name:
+    masks = lp["masks"]
+    scores = lp["scores"]
+    dt = float(lp.get("time_ms", 0.0))
+
+    st.subheader("Choix du masque candidat (multimask)")
+    st.write({
+        "scores": [float(s) for s in scores.tolist()],
+        "time_ms": dt,
+        "points": lp.get("points", []),
+        "box_xyxy": [int(v) for v in lp["box"].tolist()],
+    })
+
+    default_idx = int(np.argmax(scores))
+    idx = st.selectbox("index du masque", list(range(len(scores))), index=default_idx)
+
+    mask = masks[int(idx)].astype(bool)
     overlay = render_overlay(img, mask, box, alpha=0.5)
 
+    # métriques
     m_area = mask_area(mask)
     m_bbox = mask_bbox(mask)
     m_per = mask_perimeter(mask)
 
     st.subheader("Résultat")
-    st.image(overlay, caption=f"score={score:.3f} | time={dt:.1f} ms", use_container_width=True)
+    st.image(
+        overlay,
+        caption=f"mask_idx={idx} | score={float(scores[idx]):.3f} | time={dt:.1f} ms",
+        use_container_width=True,
+    )
 
     st.write({
         "image": img_name,
         "box_xyxy": [int(x_min), int(y_min), int(x_max), int(y_max)],
-        "score": float(score),
+        "points": lp.get("points", []),
+        "mask_idx": int(idx),
+        "score": float(scores[idx]),
         "time_ms": float(dt),
         "area_px": int(m_area),
         "mask_bbox": m_bbox,
         "perimeter": float(m_per),
     })
 
-    # 5) Sauvegarde overlay
-    save = st.button("Sauvegarder overlay")
-    if save:
+    if st.button("Sauvegarder overlay (masque sélectionné)"):
         OUT_DIR.mkdir(parents=True, exist_ok=True)
-        out_path = OUT_DIR / f"overlay_{img_path.stem}_x{x_min}_y{y_min}_x{x_max}_y{y_max}.png"
+        out_path = OUT_DIR / f"overlay_{img_path.stem}_m{int(idx)}.png"
         cv2.imwrite(str(out_path), cv2.cvtColor(overlay, cv2.COLOR_RGB2BGR))
         st.success(f"Sauvegardé: {out_path}")

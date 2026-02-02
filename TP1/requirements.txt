@@ -2,5 +2,11 @@ streamlit
 opencv-python
 numpy
 matplotlib
+diffusers
+transformers
+accelerate
+safetensors
+torch 
+pillow
 # SAM v1 (Segment Anything)
 git+https://github.com/facebookresearch/segment-anything.git

@@ -88,4 +88,30 @@ Sur des scènes chargées ou avec faible contraste, l’overlay met en évidence
 Les métriques complètent l’analyse visuelle en fournissant des indicateurs quantitatifs simples pour comparer différentes images ou différents prompts.  
 Ce couplage visualisation + métriques est utile pour déboguer l’UI et ajuster les interactions utilisateur avant une utilisation plus avancée.
 
+## Mini-UI Streamlit
+
+### Captures UI
+Cas simple :
+
+![alt text](../img/res_imfacile.jpg)
+
+Cas difficile :
+
+![alt text](../img/res_imdif.jpg)
+
+### 3 tests (UI)
+
+| Image    | BBox (x1,y1,x2,y2) | Score | Aire (px) | Temps (ms) |
+|---------|---------------------|-------|-----------|------------|
+| im1.jpeg | [72,0,158,224]     | 1.002 |  15805    | 347        |
+| im6.jpeg | [49,16,224,132]    | 0.908 |  12448    | 350        |
+| im8.jpeg | [43,39,147,221]    | 0.980 | 0.9807    | 349        |
+
+### Debug : effet de la taille de la bbox
+
+Quand on agrandit la bbox, SAM dispose de plus de contexte mais peut déborder sur l’arrière-plan.  
+Quand on rétrécit la bbox trop fortement, l’objet peut être tronqué : le masque devient incomplet et le score peut baisser.  
+Sur les scènes chargées, une bbox large capture plusieurs objets → SAM peut segmenter la mauvaise instance.  
+L’overlay est très utile pour voir immédiatement ces erreurs de cadrage : bbox mal placée, fuite du masque, ou segmentation d’un autre objet proche.
+
 

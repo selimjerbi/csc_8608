@@ -114,4 +114,45 @@ Quand on rétrécit la bbox trop fortement, l’objet peut être tronqué : le m
 Sur les scènes chargées, une bbox large capture plusieurs objets → SAM peut segmenter la mauvaise instance.  
 L’overlay est très utile pour voir immédiatement ces erreurs de cadrage : bbox mal placée, fuite du masque, ou segmentation d’un autre objet proche.
 
+## Affinage SAM : points FG/BG + multimask
+
+### Comparaison avant/après (2 images)
+
+**Image 1 : im8.jpeg**
+- Avant (bbox seule) :
+
+![alt text](../img/sortie_ex7_im1.jpg)
+
+- Après (bbox + points) :
+
+![alt text](../img/im1_point.jpg)
+
+**Image 2 : im7.jpeg**
+- Avant (bbox seule) : 
+
+![alt text](../img/sotie_ex7_im2.jpg)
+
+- Après (bbox + points) :
+
+![alt text](../img/im2_point.jpg)
+
+### Détails des essais
+
+**Cas 1 — im8.jpeg**
+{"image":"im8.jpeg","box_xyxy":[0,0,193,259],"points":[[87,130,1]],"mask_idx":0,"score":1.0188004970550537,"time_ms":771.2609767913818,"area_px":49726,"mask_bbox":[1,0,192,259],"perimeter":901.6568541526794}
+
+**Cas 2 — imY.jpeg**
+{"image":"im7.jpeg","box_xyxy":[0,0,300,167],"points":[[150,84,1]],"mask_idx":0,"score":1.008439540863037,"time_ms":345.8595275878906,"area_px":46473,"mask_bbox":[0,1,300,166],"perimeter":1675.3940033912659}
+
+### Analyse
+
+Les points FG permettent de lever l’ambiguïté quand plusieurs objets sont inclus dans la bbox : SAM comprend immédiatement quel objet est visé.  
+Les points BG deviennent indispensables lorsque le masque fuit vers le fond ou quand un objet parasite très proche attire la segmentation.  
+Un point BG placé sur la zone à exclure force SAM à couper cette région, ce qui améliore fortement les cas avec occlusion partielle ou fond complexe.  
+Malgré cela, certains cas restent difficiles : objets très fins (grillage), transparents (verre), ou faible contraste, où même FG/BG peut produire plusieurs masques plausibles.  
+Dans ces situations, le multimask est utile : on peut choisir manuellement le candidat le plus cohérent visuellement, même si le score n’est pas toujours parfaitement corrélé à la meilleure segmentation.
+
+
+
+
 

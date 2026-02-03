@@ -90,3 +90,93 @@ L’application Streamlit permet :
 ![alt text](../img/imgtoimg1.png)
 
 ![alt text](../img/imgtoimg.png)
+
+
+## TP2 — Évaluation “light” (0–2) + total /10
+
+### Grille (scores entiers 0–2)
+- **Prompt adherence (0–2)** : 2 = correspond clairement au prompt, 0 = hors-sujet
+- **Visual realism (0–2)** : 2 = photo crédible, 0 = rendu très artificiel
+- **Artifacts (0–2)** : 2 = aucun artefact gênant, 0 = artefacts majeurs 
+- **E-commerce usability (0–2)** : 2 = publiable après retouches mineures, 0 = inutilisable
+- **Reproducibility (0–2)** : 2 = paramètres suffisants pour reproduire, 0 = infos manquantes
+
+> Barème total : somme des 5 critères = **/10**.
+
+---
+
+### Image A — Text2Img baseline (référence)
+**Fichier :** 
+![](../outputs/baseline.png)
+
+**Config (rappel) :** scheduler=EulerA, seed=42, steps=30, guidance=7.5, 512×512
+
+| Critère | Score (0–2) |
+|---|---|
+| Prompt adherence | 2 |
+| Visual realism | 2 |
+| Artifacts | 1 |
+| E-commerce usability | 2 |
+| Reproducibility | 2 |
+**Total : 9/10**
+
+**Justification :**
+- L’objet principal correspond au prompt et est bien isolé sur fond propre.
+- Rendu global réaliste , mais petits détails perfectibles.
+- Utilisable e-commerce après retouches légères, paramètres suffisants pour relancer.
+
+---
+
+### Image B — Text2Img “extrême” (paramètre extrême)
+**Fichier :** 
+![](../outputs/t2i_run05_guid12.png)
+
+**Config (rappel) :** scheduler=EulerA, seed=42, steps=30, guidance=12.0, 512×512
+
+| Critère | Score (0–2) |
+|---|---|
+| Prompt adherence | 2 |
+| Visual realism | 1 |
+| Artifacts | 1 |
+| E-commerce usability | 1 |
+| Reproducibility | 2 |
+**Total : 7/10**
+
+**Justification :**
+- Le prompt est bien respecté mais le rendu peut devenir forcé ou au contraire moins fini.
+- Augmentation des artefacts possibles.
+- Utilisable seulement avec retouches plus importantes, mais reste reproductible grâce à la config.
+
+---
+
+### Image C — Img2Img strength élevé (obligatoire)
+**Fichier :**  
+**Avant :**  
+![](../outputs/i2i_source.png)
+
+**Après (strength=0.85) :**  
+![](../outputs/i2i_run09_strength085.png)
+
+**Config (rappel) :** scheduler=EulerA, seed=42, steps=30, guidance=7.5, strength=0.85, 512×512
+
+| Critère | Score (0–2) |
+|---|---|
+| Prompt adherence | 2 |
+| Visual realism | 1 |
+| Artifacts | 1 |
+| E-commerce usability | 0 |
+| Reproducibility | 2 |
+**Total : 6/10**
+
+**Justification :**
+- Le modèle suit bien le prompt mais s’éloigne fortement de l’image source : détails/texture/forme peuvent être réinventés.
+- À strength élevé, la fidélité structurelle baisse : risque de changer”le produit.
+- En e-commerce, cela devient risqué : utilisable plutôt pour inspiration, pas pour fiche produit.
+
+---
+
+## Réflexion (8–12 lignes)
+
+Les paramètres influencent un compromis clair qualité vs latence/coût : augmenter num_inference_steps ou choisir certains schedulers améliore parfois la netteté et la stabilité, mais augmente linéairement le temps de génération et donc le coût GPU. À l’inverse, réduire steps accélère mais dégrade souvent les détails et augmente les artefacts.  
+La reproductibilité dépend au minimum du couple, de la seed, des steps, du guidance, de la résolution. Elle peut casser si la version des librairies change, si le modèle est mis à jour côté hub, ou si on ne fixe pas correctement le générateur.  
+En e-commerce, les risques principaux sont les hallucinations, des images trompeuses, et la conformité. Pour limiter ces risques, je privilégierais strength modéré, j’ajouterais des filtres, un contrôle humain, et je n’autoriserais la publication que sur des images validées ou retouchées, avec traçabilité complète des configs.

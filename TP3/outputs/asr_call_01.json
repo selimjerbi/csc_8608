@@ -1,0 +1,83 @@
+{
+  "audio_path": "TP3/data/call_01.wav",
+  "model_id": "openai/whisper-base",
+  "device": "cpu",
+  "audio_duration_s": 36.969375,
+  "elapsed_s": 30.09136652946472,
+  "rtf": 0.8139538883052452,
+  "segments": [
+    {
+      "segment_id": 0,
+      "start_s": 1.506,
+      "end_s": 4.126,
+      "text": "Hello, thank you for calling customer support."
+    },
+    {
+      "segment_id": 1,
+      "start_s": 4.418,
+      "end_s": 5.694,
+      "text": "My name is Alex."
+    },
+    {
+      "segment_id": 2,
+      "start_s": 5.858,
+      "end_s": 7.23,
+      "text": "and they will help you today."
+    },
+    {
+      "segment_id": 3,
+      "start_s": 7.746,
+      "end_s": 10.142,
+      "text": "I'm calling about an order that arrived with Damage It."
+    },
+    {
+      "segment_id": 4,
+      "start_s": 10.37,
+      "end_s": 12.35,
+      "text": "package was delivered yesterday."
+    },
+    {
+      "segment_id": 5,
+      "start_s": 12.706,
+      "end_s": 14.11,
+      "text": "But the screen is cracked."
+    },
+    {
+      "segment_id": 6,
+      "start_s": 14.754,
+      "end_s": 18.75,
+      "text": "I would like a refound or a replacement as soon as possible."
+    },
+    {
+      "segment_id": 7,
+      "start_s": 19.362,
+      "end_s": 20.83,
+      "text": "The order number is..."
+    },
+    {
+      "segment_id": 8,
+      "start_s": 20.994,
+      "end_s": 22.11,
+      "text": "AX."
+    },
+    {
+      "segment_id": 9,
+      "start_s": 22.626,
+      "end_s": 24.638,
+      "text": "One, nine, seven, three, five."
+    },
+    {
+      "segment_id": 10,
+      "start_s": 25.282,
+      "end_s": 32.542,
+      "text": "You can read me at jone.smith at example.com. Also my phone number is 555."
+    },
+    {
+      "segment_id": 11,
+      "start_s": 32.77,
+      "end_s": 35.678,
+      "text": "5, 0, 1, 9, 9. Thank you."
+    }
+  ],
+  "full_text": "Hello, thank you for calling customer support. My name is Alex. and they will help you today. I'm calling about an order that arrived with Damage It. package was delivered yesterday. But the screen is cracked. I would like a refound or a replacement as soon as possible. The order number is... AX. One, nine, seven, three, five. You can read me at jone.smith at example.com. Also my phone number is 555. 5, 0, 1, 9, 9. Thank you."
+}

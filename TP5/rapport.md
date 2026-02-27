@@ -121,3 +121,36 @@ Cette pénalité domine les termes de récompense “normaux”  et peut rendre 
 Ainsi, une politique qui évite l’action 2 peut maximiser 
 J(π) même si elle conduit à un crash, car elle supprime les pertes massives liées à la pénalité.
 C’est un exemple de “reward hacking” : l’agent optimise exactement la fonction objectif qu’on lui donne, pas l’intention réelle.
+
+## Robustesse OOD : gravité modifiée (−2.0)
+
+### Preuve d’exécution
+
+![alt text](img/image6.png)
+
+![alt text](img/ood_agent.gif)
+
+### Observation et explication technique
+
+En gravité plus faible, la dynamique du vol change : à poussée égale, le vaisseau accélère moins vers le sol et “reste en l’air” plus longtemps.
+L’agent PPO a été entraîné dans la physique par défaut : il a appris une politique adaptée à une descente plus rapide, avec des timings de freinage et de stabilisation calibrés pour −10.0.
+En OOD, ces timings deviennent inadaptés : l’agent peut sur-compenser, manquer sa fenêtre d’atterrissage, dériver latéralement, ou osciller.
+Techniquement, l’observation suit une distribution différente de celle vue à l’entraînement, donc la politique  π(a∣s) n’est plus optimale.
+Ce décalage de dynamique explique pourquoi l’agent peut échouer ou peiner à se poser calmement sans ré-entraînement ou randomization de domaine.
+
+## Bilan Ingénieur : Le défi du Sim-to-Real
+
+L’expérience avec la gravité modifiée montre que l’agent PPO a surappris la physique de son environnement d’entraînement (gravité = −10.0).  
+Lorsque la gravité change, la dynamique du vol change aussi, et la politique apprise n’est plus adaptée.
+
+Pour rendre l’agent robuste sans entraîner un modèle différent pour chaque lune, on peut :
+
+### 1 Domain Randomization
+Pendant l’entraînement, faire varier aléatoirement la gravité à chaque épisode.  
+Ainsi, l’agent apprend à gérer plusieurs physiques différentes et généralise mieux.
+
+### 2 Ajouter la gravité dans l’état
+Inclure la valeur de la gravité dans les observations envoyées au réseau.  
+L’agent peut alors adapter sa stratégie selon le contexte.
+
+Ces solutions permettent d’avoir un seul modèle robuste, sans multiplier les entraînements, et réduisent le risque d’échec en conditions réelles.

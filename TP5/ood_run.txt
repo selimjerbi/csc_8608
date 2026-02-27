@@ -1,1 +1,9 @@
 --- ÉVALUATION OOD : GRAVITÉ FAIBLE ---
+
+--- RAPPORT DE VOL PPO (GRAVITÉ MODIFIÉE) ---
+Issue du vol : CRASH DÉTECTÉ 💥
+Récompense totale cumulée : -170.74 points
+Allumages moteur principal : 0
+Allumages moteurs latéraux : 35
+Durée du vol : 155 frames
+Vidéo de la télémétrie sauvegardée sous 'ood_agent.gif'

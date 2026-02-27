@@ -100,21 +100,22 @@ Le comportement est “aberrant” du point de vue humain, mais cohérent avec l
 
 L’agent PPO maximise l’espérance de la somme des récompenses :
 
-\[
-J(\pi) = \mathbb{E}_{\pi} \left[ \sum_{t=0}^{T} \gamma^t \, r_t \right]
-\]
+$$
+J(\pi)=\mathbb{E}_{\pi}\left[\sum_{t=0}^{T} \gamma^{t}\, r_t\right]
+$$
 
 où :
 
-- \( \pi \) est la politique,
-- \( r_t \) est la récompense à l’instant \( t \),
-- \( \gamma \in [0,1] \) est le facteur de discount,
-- \( T \) est l’horizon de l’épisode.
+- $\pi$ est la politique,
+- $r_t$ est la récompense à l’instant $t$,
+- $\gamma \in [0,1)$ est le facteur de discount,
+- $T$ est l’horizon de l’épisode.
 
-Avec notre wrapper, chaque action 2 (moteur principal) ajoute une pénalité forte : 
-\[
-r'_t = r_t - 50 \cdot \mathbf{1}_{\{a_t = 2\}}
-\]
+Avec notre wrapper, chaque action $2$ (moteur principal) ajoute une pénalité forte :
+
+$$
+r'_t = r_t - 50 \cdot \mathbf{1}\{a_t = 2\}.
+$$
 
 Cette pénalité domine les termes de récompense “normaux”  et peut rendre toute trajectoire utilisant le moteur principal très défavorable.
 Ainsi, une politique qui évite l’action 2 peut maximiser 

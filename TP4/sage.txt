@@ -1,0 +1,27 @@
+device: cuda
+model: sage
+epochs: 200
+sampling: {'batch_size': 256, 'num_neighbors': [10, 10]}
+epoch=001 loss=1.9480 train_acc=0.9786 val_acc=0.6720 test_acc=0.7040 train_f1=0.9784 val_f1=0.6303 test_f1=0.6699 epoch_time_s=2.1103
+epoch=010 loss=0.0227 train_acc=1.0000 val_acc=0.7640 test_acc=0.8020 train_f1=1.0000 val_f1=0.7546 test_f1=0.7971 epoch_time_s=0.0023
+epoch=020 loss=0.0006 train_acc=1.0000 val_acc=0.7740 test_acc=0.7930 train_f1=1.0000 val_f1=0.7570 test_f1=0.7781 epoch_time_s=0.0021
+epoch=030 loss=0.0006 train_acc=1.0000 val_acc=0.7600 test_acc=0.7980 train_f1=1.0000 val_f1=0.7493 test_f1=0.7877 epoch_time_s=0.0023
+epoch=040 loss=0.0011 train_acc=1.0000 val_acc=0.7640 test_acc=0.7990 train_f1=1.0000 val_f1=0.7577 test_f1=0.7936 epoch_time_s=0.0022
+epoch=050 loss=0.0039 train_acc=1.0000 val_acc=0.7720 test_acc=0.8010 train_f1=1.0000 val_f1=0.7643 test_f1=0.7919 epoch_time_s=0.0022
+epoch=060 loss=0.0016 train_acc=1.0000 val_acc=0.7640 test_acc=0.8010 train_f1=1.0000 val_f1=0.7622 test_f1=0.7951 epoch_time_s=0.0021
+epoch=070 loss=0.0045 train_acc=1.0000 val_acc=0.7580 test_acc=0.7890 train_f1=1.0000 val_f1=0.7487 test_f1=0.7828 epoch_time_s=0.0022
+epoch=080 loss=0.0055 train_acc=1.0000 val_acc=0.7720 test_acc=0.7980 train_f1=1.0000 val_f1=0.7708 test_f1=0.7943 epoch_time_s=0.0023
+epoch=090 loss=0.0050 train_acc=1.0000 val_acc=0.7820 test_acc=0.8070 train_f1=1.0000 val_f1=0.7714 test_f1=0.7985 epoch_time_s=0.0021
+epoch=100 loss=0.0067 train_acc=1.0000 val_acc=0.7720 test_acc=0.8010 train_f1=1.0000 val_f1=0.7646 test_f1=0.7949 epoch_time_s=0.0022
+epoch=110 loss=0.0063 train_acc=1.0000 val_acc=0.7700 test_acc=0.8160 train_f1=1.0000 val_f1=0.7587 test_f1=0.8059 epoch_time_s=0.0022
+epoch=120 loss=0.0043 train_acc=1.0000 val_acc=0.7600 test_acc=0.7950 train_f1=1.0000 val_f1=0.7498 test_f1=0.7897 epoch_time_s=0.0022
+epoch=130 loss=0.0045 train_acc=1.0000 val_acc=0.7680 test_acc=0.8080 train_f1=1.0000 val_f1=0.7622 test_f1=0.8008 epoch_time_s=0.0022
+epoch=140 loss=0.0037 train_acc=1.0000 val_acc=0.7680 test_acc=0.8010 train_f1=1.0000 val_f1=0.7585 test_f1=0.7941 epoch_time_s=0.0022
+epoch=150 loss=0.0042 train_acc=1.0000 val_acc=0.7760 test_acc=0.8090 train_f1=1.0000 val_f1=0.7649 test_f1=0.8035 epoch_time_s=0.0022
+epoch=160 loss=0.0041 train_acc=1.0000 val_acc=0.7720 test_acc=0.8070 train_f1=1.0000 val_f1=0.7636 test_f1=0.7967 epoch_time_s=0.0022
+epoch=170 loss=0.0046 train_acc=1.0000 val_acc=0.7720 test_acc=0.8040 train_f1=1.0000 val_f1=0.7649 test_f1=0.8001 epoch_time_s=0.0022
+epoch=180 loss=0.0041 train_acc=1.0000 val_acc=0.7700 test_acc=0.8070 train_f1=1.0000 val_f1=0.7612 test_f1=0.8024 epoch_time_s=0.0023
+epoch=190 loss=0.0036 train_acc=1.0000 val_acc=0.7740 test_acc=0.8120 train_f1=1.0000 val_f1=0.7626 test_f1=0.8039 epoch_time_s=0.0023
+epoch=200 loss=0.0044 train_acc=1.0000 val_acc=0.7700 test_acc=0.8020 train_f1=1.0000 val_f1=0.7577 test_f1=0.7950 epoch_time_s=0.0023
+total_train_time_s=2.5546
+train_loop_time=3.8967

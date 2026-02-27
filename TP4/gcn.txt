@@ -1,0 +1,16 @@
+device: cpu
+model: gcn
+epochs: 200
+epoch=001 loss=1.9582 train_acc=0.8357 val_acc=0.4660 test_acc=0.4670 train_f1=0.8334 val_f1=0.4846 test_f1=0.4749 epoch_time_s=0.0261
+epoch=020 loss=0.0182 train_acc=1.0000 val_acc=0.7820 test_acc=0.7830 train_f1=1.0000 val_f1=0.7676 test_f1=0.7769 epoch_time_s=0.0207
+epoch=040 loss=0.0074 train_acc=1.0000 val_acc=0.7740 test_acc=0.7940 train_f1=1.0000 val_f1=0.7604 test_f1=0.7873 epoch_time_s=0.0223
+epoch=060 loss=0.0126 train_acc=1.0000 val_acc=0.7740 test_acc=0.7940 train_f1=1.0000 val_f1=0.7590 test_f1=0.7882 epoch_time_s=0.0204
+epoch=080 loss=0.0132 train_acc=1.0000 val_acc=0.7700 test_acc=0.7980 train_f1=1.0000 val_f1=0.7567 test_f1=0.7921 epoch_time_s=0.0210
+epoch=100 loss=0.0137 train_acc=1.0000 val_acc=0.7740 test_acc=0.8130 train_f1=1.0000 val_f1=0.7547 test_f1=0.8048 epoch_time_s=0.0205
+epoch=120 loss=0.0134 train_acc=1.0000 val_acc=0.7800 test_acc=0.8080 train_f1=1.0000 val_f1=0.7648 test_f1=0.7996 epoch_time_s=0.0208
+epoch=140 loss=0.0114 train_acc=1.0000 val_acc=0.7760 test_acc=0.8060 train_f1=1.0000 val_f1=0.7598 test_f1=0.7964 epoch_time_s=0.0220
+epoch=160 loss=0.0091 train_acc=1.0000 val_acc=0.7740 test_acc=0.7990 train_f1=1.0000 val_f1=0.7610 test_f1=0.7922 epoch_time_s=0.0217
+epoch=180 loss=0.0099 train_acc=1.0000 val_acc=0.7720 test_acc=0.8030 train_f1=1.0000 val_f1=0.7577 test_f1=0.7981 epoch_time_s=0.0213
+epoch=200 loss=0.0089 train_acc=1.0000 val_acc=0.7740 test_acc=0.8020 train_f1=1.0000 val_f1=0.7581 test_f1=0.7942 epoch_time_s=0.0216
+total_train_time_s=4.4195
+train_loop_time=6.4051

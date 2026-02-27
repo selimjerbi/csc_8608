@@ -1,0 +1,16 @@
+device: cpu
+model: mlp
+epochs: 200
+epoch=001 loss=1.9548 train_acc=0.3429 val_acc=0.3540 test_acc=0.3430 train_f1=0.2619 val_f1=0.1296 test_f1=0.1225 epoch_time_s=0.0129
+epoch=020 loss=0.0363 train_acc=1.0000 val_acc=0.5580 test_acc=0.5710 train_f1=1.0000 val_f1=0.5531 test_f1=0.5633 epoch_time_s=0.0095
+epoch=040 loss=0.0066 train_acc=1.0000 val_acc=0.5980 test_acc=0.5900 train_f1=1.0000 val_f1=0.5842 test_f1=0.5752 epoch_time_s=0.0099
+epoch=060 loss=0.0109 train_acc=1.0000 val_acc=0.5760 test_acc=0.5810 train_f1=1.0000 val_f1=0.5626 test_f1=0.5685 epoch_time_s=0.0100
+epoch=080 loss=0.0113 train_acc=1.0000 val_acc=0.5760 test_acc=0.5820 train_f1=1.0000 val_f1=0.5677 test_f1=0.5671 epoch_time_s=0.0097
+epoch=100 loss=0.0128 train_acc=1.0000 val_acc=0.5580 test_acc=0.5670 train_f1=1.0000 val_f1=0.5499 test_f1=0.5558 epoch_time_s=0.0097
+epoch=120 loss=0.0135 train_acc=1.0000 val_acc=0.5840 test_acc=0.5820 train_f1=1.0000 val_f1=0.5707 test_f1=0.5681 epoch_time_s=0.0097
+epoch=140 loss=0.0089 train_acc=1.0000 val_acc=0.5720 test_acc=0.5750 train_f1=1.0000 val_f1=0.5628 test_f1=0.5639 epoch_time_s=0.0108
+epoch=160 loss=0.0078 train_acc=1.0000 val_acc=0.5800 test_acc=0.5760 train_f1=1.0000 val_f1=0.5680 test_f1=0.5644 epoch_time_s=0.0135
+epoch=180 loss=0.0124 train_acc=1.0000 val_acc=0.5840 test_acc=0.5970 train_f1=1.0000 val_f1=0.5684 test_f1=0.5768 epoch_time_s=0.0093
+epoch=200 loss=0.0113 train_acc=1.0000 val_acc=0.5760 test_acc=0.5850 train_f1=1.0000 val_f1=0.5734 test_f1=0.5715 epoch_time_s=0.0094
+total_train_time_s=1.9895
+train_loop_time=2.7514
